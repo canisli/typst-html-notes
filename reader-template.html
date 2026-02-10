@@ -1,0 +1,2313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Light mode (default) */
+    :root {
+      --bg-base: #faf9f7;
+      --bg-surface: #ffffff;
+      --bg-elevated: #f5f4f1;
+      --bg-toc: #faf9f7;
+      --bg-toc-hover: #f5f4f1;
+      --bg-toc-active: #f0eeeb;
+      --text-primary: #1a1a1a;
+      --text-secondary: #4a4a4a;
+      --text-muted: #8a8a8a;
+      --text-toc: #1a1a1a;
+      --text-toc-muted: #4a4a4a;
+      --toc-border: rgba(0, 0, 0, 0.08);
+      --toc-overlay: rgba(0, 0, 0, 0.03);
+      --toc-overlay-hover: rgba(0, 0, 0, 0.05);
+      --toc-overlay-border: rgba(0, 0, 0, 0.1);
+      --toc-shadow: rgba(0, 0, 0, 0.08);
+      --toc-scrollbar: rgba(0, 0, 0, 0.15);
+      --toc-scrollbar-hover: rgba(0, 0, 0, 0.25);
+      --accent: #c45d35;
+      --accent-soft: rgba(196, 93, 53, 0.1);
+      --accent-hover: #d96b40;
+      --border: rgba(0, 0, 0, 0.08);
+      --border-strong: rgba(0, 0, 0, 0.25);
+      
+      /* Content accents (override as desired) */
+      --proof-guide-color: var(--text-primary); /* black in light mode */
+      --list-marker-color: var(--text-primary); /* black in light mode */
+      --code-bg: #f0eeeb;
+      --code-pre-bg: #f5f3f0;
+      --code-pre-text: #1a1a1a;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --math-color: #1a1a1a;
+      
+      /* Customizable reading settings */
+      --content-font: 'Cormorant Garamond', Georgia, serif;
+      --content-font-size: 1.2rem;
+      --content-line-height: 1.75;
+      --content-max-width: 800px;
+
+      /* Typst HTML export spacing tokens */
+      --typst-paragraph-margin-top: 0rem;
+      --typst-paragraph-margin-bottom: 1.25rem;
+      --typst-paragraph-before-tight-list-margin-bottom: 0.25rem;
+      --typst-paragraph-before-list-margin-bottom: 0.25rem;
+      --typst-paragraph-plus-tight-list-margin-top: 0.25rem;
+
+      --typst-heading-scroll-margin-top: 24px;
+      --typst-h1-margin-top: 0rem;
+      --typst-h1-margin-bottom: 1.5rem;
+      --typst-h1-padding-bottom: 1.25rem;
+      --typst-h1-border-bottom-width: 2px;
+
+      --typst-h2-margin-top: 3rem;
+      --typst-h2-margin-bottom: 1rem;
+      --typst-h2-margin-bottom-before-h3: 0rem;
+
+      --typst-h3-margin-top: 2.25rem;
+      --typst-h3-margin-bottom: 0.75rem;
+      --typst-h3-margin-top-after-h2: 1.5rem;
+
+      --typst-h4-margin-top: 1.75rem;
+      --typst-h4-margin-bottom: 0.5rem;
+
+      --typst-list-indent: 1.75rem;
+      --typst-list-margin-top: 1rem;
+      --typst-list-margin-bottom: 1.5rem;
+      --typst-list-tight-margin-top: 0.5rem;
+      --typst-list-tight-margin-bottom: var(--typst-list-margin-bottom);
+
+      --typst-list-tight-item-gap: 0.15rem;
+      --typst-list-nontight-item-gap: 0.75rem;
+
+      --typst-li-margin-bottom: 0.5rem;
+      --typst-li-padding-left: 0.5rem;
+      --typst-li-paragraph-margin-top: 0rem;
+      --typst-li-paragraph-margin-bottom: 0.15rem;
+
+      --typst-nested-list-margin-top: 0.1rem;
+      --typst-nested-list-after-blankline-margin-top: 0.75rem;
+
+      /* Block equation vertical spacing (controls p ↔ equation ↔ p gaps via margin collapsing) */
+      --typst-block-math-margin-y: 1.5rem;
+      --typst-block-math-scroll-margin-top: var(--typst-heading-scroll-margin-top);
+
+      /* Images / figures */
+      --typst-image-margin-top: 1rem;
+      --typst-image-margin-bottom: 1rem;
+      --typst-figure-margin-top: 1rem;
+      --typst-figure-margin-bottom: 1rem;
+      --typst-figcaption-margin-top: 0.5rem;
+    }
+
+    /* Dark mode - GitHub dark dimmed style */
+    [data-theme="dark"] {
+      --bg-base: #2F343F;
+      --bg-surface: #252932;
+      --bg-elevated: #2f3440;
+      --bg-toc: #2F343F;
+      --bg-toc-hover: #252932;
+      --bg-toc-active: #2f3440;
+      --text-primary: #e1e8ed;
+      --text-secondary: #b1bac4;
+      --text-muted: #768390;
+      --text-toc: #e1e8ed;
+      --text-toc-muted: #9ca5b0;
+      --toc-border: rgba(255, 255, 255, 0.12);
+      --toc-overlay: rgba(255, 255, 255, 0.05);
+      --toc-overlay-hover: rgba(255, 255, 255, 0.12);
+      --toc-overlay-border: rgba(255, 255, 255, 0.2);
+      --toc-shadow: rgba(0, 0, 0, 0.3);
+      --toc-scrollbar: rgba(255, 255, 255, 0.2);
+      --toc-scrollbar-hover: rgba(255, 255, 255, 0.3);
+      --accent: #e07850;
+      --accent-soft: rgba(224, 120, 80, 0.2);
+      --accent-hover: #f08860;
+      --border: rgba(225, 232, 237, 0.15);
+      --border-strong: rgba(225, 232, 237, 0.3);
+      --code-bg: #252932;
+      --code-pre-bg: #151820;
+      --code-pre-text: #e1e8ed;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+      --math-color: #e1e8ed;
+    }
+
+    /* System preference detection - GitHub dark dimmed style */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg-base: #2F343F;
+        --bg-surface: #252932;
+        --bg-elevated: #2f3440;
+        --bg-toc: #2F343F;
+        --bg-toc-hover: #252932;
+        --bg-toc-active: #2f3440;
+        --text-primary: #e1e8ed;
+        --text-secondary: #b1bac4;
+        --text-muted: #768390;
+        --text-toc: #e1e8ed;
+        --text-toc-muted: #9ca5b0;
+        --toc-border: rgba(255, 255, 255, 0.12);
+        --toc-overlay: rgba(255, 255, 255, 0.05);
+        --toc-overlay-hover: rgba(255, 255, 255, 0.12);
+        --toc-overlay-border: rgba(255, 255, 255, 0.2);
+        --accent: #e07850;
+        --accent-soft: rgba(224, 120, 80, 0.2);
+        --accent-hover: #f08860;
+        --border: rgba(225, 232, 237, 0.15);
+        --border-strong: rgba(225, 232, 237, 0.3);
+        --code-bg: #252932;
+        --code-pre-bg: #151820;
+        --code-pre-text: #e1e8ed;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+        --math-color: #e1e8ed;
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Hide TOC list until it's built to prevent flicker */
+    .toc-list {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .toc-list.ready {
+      opacity: 1;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0,0,0,0.15);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0,0,0,0.25);
+    }
+
+    .toc::-webkit-scrollbar-thumb {
+      background: var(--toc-scrollbar);
+    }
+
+    .toc::-webkit-scrollbar-thumb:hover {
+      background: var(--toc-scrollbar-hover);
+    }
+
+    /* Layout */
+    .reader {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* Table of Contents - Fixed Sidebar */
+    .toc {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--bg-toc);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 100;
+      box-shadow: 4px 0 24px var(--toc-shadow);
+    }
+
+    .toc-header {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid var(--toc-border);
+    }
+
+    .toc-title-block {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .toc-title {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-toc);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .toc-term {
+      display: block;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--text-toc-muted);
+      margin-top: 12px;
+    }
+
+    .toc-term:empty {
+      display: none;
+    }
+
+    .settings-toggle {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--toc-border);
+      background: var(--toc-overlay);
+      color: var(--text-toc-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .settings-toggle:hover,
+    .settings-toggle.active {
+      background: var(--toc-overlay-hover);
+      color: var(--text-toc);
+      border-color: var(--toc-overlay-border);
+    }
+
+    .settings-toggle svg {
+      transition: transform 0.3s ease;
+    }
+
+    .settings-toggle.active svg {
+      transform: rotate(90deg);
+    }
+
+    /* Settings Panel */
+    .settings-panel {
+      background: var(--toc-overlay);
+      border-bottom: 1px solid var(--toc-border);
+      margin-left: -24px;
+      margin-right: -24px;
+      margin-bottom: 16px;
+      padding: 0 24px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease, margin-bottom 0.3s ease;
+    }
+
+    .settings-panel.open {
+      max-height: 400px;
+      padding: 16px 24px 20px;
+      margin-bottom: 16px;
+    }
+    
+    .settings-panel:not(.open) {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .settings-section {
+      margin-bottom: 20px;
+    }
+
+    .settings-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .settings-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      color: var(--text-toc-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .settings-options {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .settings-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--toc-border);
+      background: var(--toc-overlay);
+      color: var(--text-toc-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .settings-btn:hover {
+      background: var(--toc-overlay-hover);
+      color: var(--text-toc);
+      border-color: var(--toc-overlay-border);
+    }
+
+    .settings-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .settings-btn .icon {
+      display: inline-block;
+      margin-right: 4px;
+      font-size: 0.85em;
+    }
+
+    .toc-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0px 0 16px;
+      /* Prevent scroll from leaking to parent when at top/bottom */
+      overscroll-behavior: contain;
+      /* Hide scrollbar while keeping scroll functionality */
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE/Edge */
+    }
+
+    .toc-nav::-webkit-scrollbar {
+      display: none; /* Chrome/Safari/Opera */
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-item {
+      position: relative;
+    }
+
+    .toc-link {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px 10px 8px;
+      color: var(--text-toc-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 400;
+      transition: all 0.15s ease;
+      position: relative;
+      gap: 4px;
+    }
+
+    .toc-link::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .toc-link:hover {
+      color: var(--text-toc);
+      background: var(--bg-toc-hover);
+    }
+
+    .toc-link.active {
+      color: var(--text-toc);
+      background: var(--bg-toc-active);
+    }
+
+    .toc-number {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-toc-muted);
+      min-width: 20px;
+    }
+
+    .toc-text {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .toc-link[data-level="2"] {
+      padding-left: 20px;
+      font-size: 0.8125rem;
+    }
+
+    .toc-link[data-level="2"] .toc-number {
+      font-size: 0.7rem;
+    }
+
+    .toc-link[data-level="3"] {
+      padding-left: 32px;
+      font-size: 0.75rem;
+    }
+
+    .toc-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--toc-border);
+    }
+
+    .toc-footer .settings-toggle {
+      width: 36px;
+      height: 36px;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      margin-left: 280px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .content-wrapper {
+      width: 100%;
+      max-width: var(--content-max-width);
+      padding: 60px 48px 120px;
+      transition: max-width 0.3s ease;
+    }
+
+    /* Typst Content Styling */
+    .typst-content {
+      font-family: var(--content-font);
+      font-size: var(--content-font-size);
+      line-height: var(--content-line-height);
+      color: var(--text-primary);
+      transition: font-size 0.2s ease, line-height 0.2s ease;
+    }
+
+    /* Reset Typst's default styling while keeping structure */
+    .typst-content * {
+      max-width: 100%;
+    }
+
+    .typst-content h1 {
+      font-family: var(--content-font);
+      font-size: 2.75rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-top: var(--typst-h1-margin-top);
+      margin-bottom: var(--typst-h1-margin-bottom);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      padding-bottom: var(--typst-h1-padding-bottom);
+      border-bottom: var(--typst-h1-border-bottom-width) solid var(--border-strong);
+      scroll-margin-top: var(--typst-heading-scroll-margin-top);
+    }
+
+    .typst-content h2 {
+      font-family: var(--content-font);
+      font-size: 1.85rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-top: var(--typst-h2-margin-top);
+      margin-bottom: var(--typst-h2-margin-bottom);
+      line-height: 1.25;
+      scroll-margin-top: var(--typst-heading-scroll-margin-top);
+      position: relative;
+    }
+
+    /* Reduce h2 bottom spacing when an h3 immediately follows. */
+    .typst-content h2:has(+ h3) {
+      margin-bottom: var(--typst-h2-margin-bottom-before-h3);
+    }
+
+    .typst-content h3 {
+      font-family: var(--content-font);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: var(--typst-h3-margin-top);
+      margin-bottom: var(--typst-h3-margin-bottom);
+      scroll-margin-top: var(--typst-heading-scroll-margin-top);
+    }
+
+    /* Fallback for browsers without :has(): remove the h3 top margin instead. */
+    .typst-content h2 + h3 {
+      margin-top: var(--typst-h3-margin-top-after-h2);
+    }
+
+    .typst-content h4 {
+      font-family: var(--content-font);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-top: var(--typst-h4-margin-top);
+      margin-bottom: var(--typst-h4-margin-bottom);
+      scroll-margin-top: var(--typst-heading-scroll-margin-top);
+    }
+
+    /* Heading numbers */
+    .typst-content .heading-number {
+      color: var(--accent);
+      font-weight: 500;
+      margin-right: 0.15em;
+    }
+
+    .typst-content p {
+      margin-top: var(--typst-paragraph-margin-top);
+      margin-bottom: var(--typst-paragraph-margin-bottom);
+    }
+
+    /* Paragraph directly before a list: reduce the paragraph→list gap.
+       (Margins between consecutive blocks collapse, so we must reduce BOTH
+       the paragraph bottom margin and the list top margin in this case.) */
+    .typst-content p:has(+ ul.list-tight),
+    .typst-content p:has(+ ol.list-tight) {
+      margin-bottom: var(--typst-paragraph-before-tight-list-margin-bottom);
+    }
+
+    .typst-content p:has(+ ul.list-nontight),
+    .typst-content p:has(+ ol.list-nontight),
+    .typst-content p:has(+ ul:not(.list-tight):not(.list-nontight)),
+    .typst-content p:has(+ ol:not(.list-tight):not(.list-nontight)) {
+      margin-bottom: var(--typst-paragraph-before-list-margin-bottom);
+    }
+
+    /* Paragraph ↔ block equation spacing is controlled by `.block-math` margins. */
+
+    .typst-content strong, .typst-content b {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .typst-content em, .typst-content i {
+      font-style: italic;
+    }
+
+    .typst-content a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+
+    .typst-content a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    .typst-content code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85em;
+      background: var(--code-bg);
+      padding: 0.2em 0.45em;
+      border-radius: 4px;
+      color: var(--text-primary);
+    }
+
+    .typst-content pre {
+      background: var(--code-pre-bg);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 1.75rem 0;
+      overflow-x: auto;
+      box-shadow: var(--shadow-md);
+    }
+
+    .typst-content pre code {
+      background: none;
+      padding: 0;
+      color: var(--code-pre-text);
+      font-size: 0.85rem;
+      line-height: 1.65;
+    }
+
+    .typst-content ul, .typst-content ol {
+      margin: var(--typst-list-margin-top) 0 var(--typst-list-margin-bottom) var(--typst-list-indent);
+    }
+
+    /* Tight lists: minimal spacing between items (Typst default) */
+    .typst-content ul.list-tight,
+    .typst-content ol.list-tight {
+      /* Use the same bottom margin as nontight lists */
+      margin: var(--typst-list-tight-margin-top) 0 var(--typst-list-tight-margin-bottom) var(--typst-list-indent);
+    }
+
+    /* If a paragraph is immediately followed by a tight list, tighten list top margin too. */
+    .typst-content p + ul.list-tight,
+    .typst-content p + ol.list-tight {
+      margin-top: var(--typst-paragraph-plus-tight-list-margin-top);
+    }
+
+    /* Item spacing should not add extra space after the list.
+       Apply the gap only between items, not after the last one. */
+    .typst-content ul.list-tight > li:not(:last-child),
+    .typst-content ol.list-tight > li:not(:last-child) {
+      margin-bottom: var(--typst-list-tight-item-gap);
+    }
+
+    .typst-content ul.list-tight > li:last-child,
+    .typst-content ol.list-tight > li:last-child {
+      margin-bottom: 0;
+    }
+
+    
+
+
+    /* Nontight lists: more spacing between items (tight: false) */
+    .typst-content ul.list-nontight,
+    .typst-content ol.list-nontight {
+      margin: var(--typst-list-margin-top) 0 var(--typst-list-margin-bottom) var(--typst-list-indent);
+    }
+
+    .typst-content ul.list-nontight > li:not(:last-child),
+    .typst-content ol.list-nontight > li:not(:last-child) {
+      margin-bottom: var(--typst-list-nontight-item-gap);
+    }
+
+    .typst-content ul.list-nontight > li:last-child,
+    .typst-content ol.list-nontight > li:last-child {
+      margin-bottom: 0;
+    }
+
+    /* List items often contain paragraphs in Typst HTML export.
+       Remove the global paragraph bottom margin inside list items to avoid
+       a huge gap between a parent bullet and its nested list. */
+    .typst-content ul > li > p,
+    .typst-content ol > li > p {
+      margin-top: var(--typst-li-paragraph-margin-top);
+      margin-bottom: var(--typst-li-paragraph-margin-bottom);
+    }
+
+    .typst-content ul > li > p:last-child,
+    .typst-content ol > li > p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Nested lists: tight spacing by default (parent -> child should be tight) */
+    .typst-content li > ul.list-tight,
+    .typst-content li > ol.list-tight,
+    .typst-content li > ul.list-nontight,
+    .typst-content li > ol.list-nontight {
+      margin-top: var(--typst-nested-list-margin-top);
+      margin-bottom: 0;
+    }
+
+    /* If a list item contains an extra paragraph block before the nested list
+       (common outcome of an explicit blank line), allow a larger gap. */
+    .typst-content li > p + p + ul.list-tight,
+    .typst-content li > p + p + ul.list-nontight,
+    .typst-content li > p + p + ol.list-tight,
+    .typst-content li > p + p + ol.list-nontight {
+      margin-top: var(--typst-nested-list-after-blankline-margin-top);
+    }
+
+    .typst-content li {
+      margin-bottom: var(--typst-li-margin-bottom);
+      padding-left: var(--typst-li-padding-left);
+    }
+
+    .typst-content li::marker {
+      color: var(--list-marker-color);
+    }
+
+    .typst-content blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 1rem 0 1rem 1.5rem;
+      margin: 1.75rem 0;
+      background: var(--accent-soft);
+      border-radius: 0 8px 8px 0;
+    }
+
+    .typst-content blockquote p {
+      margin-bottom: 0;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    .typst-content hr {
+      border: none;
+      height: 1px;
+      background: var(--border);
+      margin: 3rem 0;
+    }
+
+    .typst-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.75rem 0;
+      font-size: 0.95rem;
+    }
+
+    .typst-content th, .typst-content td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .typst-content th {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--bg-elevated);
+    }
+
+    .typst-content tr:hover td {
+      background: var(--bg-elevated);
+    }
+
+    /* Math styling - Typst renders math as SVG */
+    .typst-content svg.typst-frame {
+      vertical-align: 0.0em;
+      display: inline-block;
+    }
+
+    /* Thicken math glyphs slightly to match PDF appearance */
+    .typst-content svg.typst-frame use {
+      stroke: var(--math-color);
+      stroke-width: 0.2px; /* Wtf this fixed it? */
+      paint-order: stroke fill;
+    }
+
+    /* Block math centering with equation numbers */
+    .typst-content .block-math {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: var(--typst-block-math-margin-y) 0;
+      width: 100%;
+      position: relative;
+      scroll-margin-top: var(--typst-block-math-scroll-margin-top);
+    }
+    .typst-content .block-math .eq-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .typst-content .block-math .eq-number {
+      position: absolute;
+      right: 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Legacy: direct SVG children (for backward compatibility) */
+    .typst-content p > svg.typst-frame:only-child,
+    .typst-content > svg.typst-frame {
+      display: block;
+      margin: 1.5rem auto;
+    }
+
+    /* Fix math colors - adapt to theme */
+    .typst-content svg.typst-frame [fill="#000000"],
+    .typst-content svg.typst-frame use,
+    .typst-content svg.typst-frame g {
+      fill: var(--math-color) !important;
+    }
+
+    .typst-content svg.typst-frame [stroke="#000000"] {
+      stroke: var(--math-color) !important;
+    }
+
+    .typst-content svg.typst-frame path {
+      fill: var(--math-color) !important;
+    }
+
+    /* Images */
+    .typst-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: var(--typst-image-margin-top) auto var(--typst-image-margin-bottom);
+      display: block;
+    }
+
+    /* Figures */
+    .typst-content .figure {
+      margin-top: var(--typst-figure-margin-top);
+      margin-bottom: var(--typst-figure-margin-bottom);
+      text-align: center;
+    }
+
+    .typst-content .figure .figure-content {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Avoid double vertical margins (figure margin + img margin) */
+    .typst-content .figure img {
+      margin: 0 auto;
+    }
+
+    .typst-content .figure figcaption {
+      margin-top: var(--typst-figcaption-margin-top);
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    /* Scroll margin for figure targets */
+    .typst-content .figure[id] {
+      scroll-margin-top: 24px;
+    }
+
+    /* Theorem Boxes */
+    .typst-content .thm-box {
+      margin: 1.5rem 0;
+      padding: 1rem 1.25rem;
+      border-left: 3px solid var(--border-strong);
+      border-radius: 0;
+    }
+
+    .typst-content .thm-box-title {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .typst-content .thm-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Proof (toggleable; emitted as <details class="proof-box"> in HTML export) */
+    .typst-content details.proof-box {
+      margin: 1.25rem 0;
+      /* visible left guide line (like blockquote) */
+      border-left: 3px solid var(--proof-guide-color);
+      background: var(--bg-secondary);
+    }
+
+    .typst-content details.proof-box > summary {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem; /* space after ▸ Proof */
+      padding: 0.85rem 1.25rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      user-select: none;
+      list-style: none;
+      outline: none;
+    }
+
+    .typst-content details.proof-box > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .typst-content details.proof-box > summary::before {
+      content: '▸';
+      display: inline-block;
+      color: var(--text-secondary);
+      transform: translateY(-0.02em);
+    }
+
+    .typst-content details.proof-box[open] > summary::before {
+      content: '▾';
+    }
+
+    /* No divider line under the proof header */
+
+    .typst-content .proof-box-body {
+      /* extra breathing room after the summary line */
+      padding: 1.05rem 1.25rem 1rem;
+    }
+
+    .typst-content .proof-box-body > p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typst-content details.proof-box > summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* `#toggle[...]` uses the same markup/style as proof toggles. */
+
+    /* QED square - render at end of the final proof line.
+       We do this by wrapping paragraph content into `.qed-text` (JS),
+       then using flex to push the QED box to the right without creating
+       a new paragraph line. */
+    .typst-content p.has-qed {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.75em;
+    }
+
+    .typst-content p.has-qed > .qed-text {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .typst-content p.has-qed > span.qed {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    /* QED in standalone paragraph (when proof ends with block element) */
+    .typst-content .qed-paragraph {
+      text-align: right;
+      margin-top: -0.5em; /* Tighten spacing since QED follows content */
+    }
+
+    /* Theorem */
+    .typst-content .thm-theorem {
+      background: #f1faff;
+      border-color: #3b82f6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .typst-content .thm-theorem {
+        background: rgba(59, 130, 246, 0.1);
+      }
+    }
+    [data-theme="dark"] .typst-content .thm-theorem {
+      background: rgba(59, 130, 246, 0.1);
+    }
+    .typst-content .thm-theorem .thm-box-title { color: #3b82f6; }
+
+    /* Lemma */
+    .typst-content .thm-lemma {
+      background: #f1faff;
+      border-color: #6366f1;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .typst-content .thm-lemma {
+        background: rgba(99, 102, 241, 0.1);
+      }
+    }
+    [data-theme="dark"] .typst-content .thm-lemma {
+      background: rgba(99, 102, 241, 0.1);
+    }
+    .typst-content .thm-lemma .thm-box-title { color: #6366f1; }
+
+    /* Proposition */
+    .typst-content .thm-proposition {
+      background: #f1faff;
+      border-color: #8b5cf6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .typst-content .thm-proposition {
+        background: rgba(139, 92, 246, 0.1);
+      }
+    }
+    [data-theme="dark"] .typst-content .thm-proposition {
+      background: rgba(139, 92, 246, 0.1);
+    }
+    .typst-content .thm-proposition .thm-box-title { color: #8b5cf6; }
+
+    /* Definition */
+    .typst-content .thm-definition {
+      background: #ffffd3;
+      border-color: #eab308;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .typst-content .thm-definition {
+        background: rgba(234, 179, 8, 0.12);
+      }
+    }
+    [data-theme="dark"] .typst-content .thm-definition {
+      background: rgba(234, 179, 8, 0.12);
+    }
+    .typst-content .thm-definition .thm-box-title { color: #ca8a04; }
+
+    /* Example */
+    .typst-content .thm-example {
+      background: #F5FFF4;
+      border-color: #22c55e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .typst-content .thm-example {
+        background: rgba(34, 197, 94, 0.1);
+      }
+    }
+    [data-theme="dark"] .typst-content .thm-example {
+      background: rgba(34, 197, 94, 0.1);
+    }
+    .typst-content .thm-example .thm-box-title { color: #22c55e; }
+
+    /* Idea */
+    .typst-content .thm-idea {
+      background: #fef6ff;
+      border-color: #d946ef;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .typst-content .thm-idea {
+        background: rgba(217, 70, 239, 0.1);
+      }
+    }
+    [data-theme="dark"] .typst-content .thm-idea {
+      background: rgba(217, 70, 239, 0.1);
+    }
+    .typst-content .thm-idea .thm-box-title { color: #d946ef; }
+
+    /* Content box (generic bordered box) #Box */
+    .typst-content .content-box {
+      border: 2px solid var(--border-strong);
+      padding: 1rem;
+      margin: 1rem 0;
+      background: var(--bg-secondary);
+    }
+
+    .typst-content .content-box > *:last-child,
+    .typst-content .content-box > p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Horizontal lines */
+    .typst-content hr.hline {
+      border: none;
+      height: 1px;
+      background: var(--text-primary);
+      margin: 0.5rem 0rem;
+    }
+
+    .typst-content hr.dline {
+      border: none;
+      height: 1px;
+      background: transparent;
+      border-top: 1px dotted var(--text-primary);
+      margin: 0.5rem 0;
+    }
+
+    /* Footnotes */
+    .typst-content .footnote-marker {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      margin: 0 0.1em;
+      color: var(--accent);
+      cursor: help;
+    }
+    .typst-content .footnote-ref {
+      text-decoration: none;
+      font-weight: 500;
+      color: inherit;
+    }
+    .typst-content .footnote-content {
+      display: none !important;
+    }
+    /* Footnote tooltip on hover */
+    .typst-content .footnote-marker {
+      position: relative;
+    }
+    .typst-content .footnote-marker:hover .footnote-tooltip {
+      display: block;
+    }
+    .footnote-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      padding: 12px 16px;
+      min-width: 280px;
+      max-width: 450px;
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
+      font-size: 1rem;
+      line-height: 1.6;
+      text-align: left;
+      white-space: normal;
+      cursor: auto;
+      /* Reset font properties since parent is small */
+      font-weight: normal;
+      vertical-align: baseline;
+      color: var(--text-primary);
+    }
+    .footnote-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: var(--border-strong);
+    }
+    /* Footnotes section at bottom (toggleable) */
+    details.footnotes-section {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    details.footnotes-section > summary {
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+      outline: none;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    details.footnotes-section > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.footnotes-section > summary::after {
+      content: '▸';
+      color: var(--text-muted);
+      flex: 0 0 auto;
+    }
+    details.footnotes-section[open] > summary::after {
+      content: '▾';
+    }
+
+    details.footnotes-section > ol {
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+    details.footnotes-section li {
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+    details.footnotes-section li::marker {
+      color: var(--list-marker-color);
+    }
+
+    /* Hide Typst's default footnote rendering */
+    .typst-content > section[role="doc-endnotes"],
+    .typst-content > aside.footnotes,
+    .typst-content > .footnotes:not(.footnotes-section),
+    .typst-content > hr + ol,
+    .typst-content > div.footnotes,
+    .typst-content [role="doc-endnote"],
+    .typst-content [role="doc-endnotes"],
+    .typst-content aside[role="note"],
+    .typst-content .typst-footnote-entry,
+    .typst-content > hr:last-of-type {
+      display: none;
+    }
+
+    /* Outline/TOC in content - hide it since we have sidebar */
+    .typst-content nav[role="doc-toc"],
+    .typst-content .outline {
+      display: none;
+    }
+
+    /* Highlight effect for scrollspy */
+    .section-highlight {
+      animation: highlight 1.5s ease;
+    }
+
+    @keyframes highlight {
+      0% { background: var(--accent-soft); }
+      100% { background: transparent; }
+    }
+
+    /* Mobile toggle */
+    .toc-toggle {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-toc);
+      color: var(--text-toc);
+      border: none;
+      cursor: pointer;
+      z-index: 200;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .toc-toggle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+
+    .toc-toggle svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .toc {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+
+      .toc.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .content-wrapper {
+        padding: 40px 24px 100px;
+      }
+
+      .toc-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .toc-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 99;
+      }
+
+      .toc-overlay.open {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  </style>
+  <script>
+    // Apply settings synchronously before page render to prevent flash
+    (function() {
+      try {
+        const saved = localStorage.getItem('typst-reader-settings');
+        if (saved) {
+          const settings = JSON.parse(saved);
+          const root = document.documentElement;
+          
+          // Presets (must match the ones in TypstReader class)
+          const presets = {
+            font: {
+              classic: { family: "'Cormorant Garamond', Georgia, serif", size: '1.2rem' },
+              modern: { family: "'DM Sans', system-ui, sans-serif", size: '1.05rem' },
+              literary: { family: "'Crimson Text', 'Times New Roman', serif", size: '1.15rem' },
+              technical: { family: "'IBM Plex Mono', 'Consolas', monospace", size: '0.95rem' }
+            },
+            spacing: {
+              compact: '1.5',
+              normal: '1.75',
+              relaxed: '2'
+            },
+            width: {
+              narrow: '650px',
+              normal: '800px',
+              wide: '1000px'
+            }
+          };
+          
+          // Apply theme
+          if (settings.theme && settings.theme !== 'auto') {
+            root.setAttribute('data-theme', settings.theme);
+          }
+          
+          // Apply font
+          if (settings.font && presets.font[settings.font]) {
+            const fontPreset = presets.font[settings.font];
+            root.style.setProperty('--content-font', fontPreset.family);
+            root.style.setProperty('--content-font-size', fontPreset.size);
+          }
+          
+          // Apply spacing
+          if (settings.spacing && presets.spacing[settings.spacing]) {
+            root.style.setProperty('--content-line-height', presets.spacing[settings.spacing]);
+          }
+          
+          // Apply width
+          if (settings.width && presets.width[settings.width]) {
+            root.style.setProperty('--content-max-width', presets.width[settings.width]);
+          }
+        }
+      } catch (e) {
+        // Silently fail if localStorage is unavailable or settings are invalid
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="reader">
+    <!-- Table of Contents Sidebar -->
+    <aside class="toc" id="toc">
+      <header class="toc-header">
+        <div class="toc-title-block">
+          <h1 class="toc-title" id="toc-title">{{COURSE}}</h1>
+          <span class="toc-term">{{TERM}}</span>
+        </div>
+      </header>
+      <nav class="toc-nav">
+        <ul class="toc-list" id="toc-list">
+          <!-- Generated dynamically -->
+        </ul>
+      </nav>
+      <div class="toc-footer">
+        <!-- Settings Panel -->
+        <div class="settings-panel" id="settings-panel">
+          <div class="settings-section">
+            <span class="settings-label">Appearance</span>
+            <div class="settings-options" data-setting="theme">
+              <button class="settings-btn" data-value="light"><span class="icon">☀️</span>Light</button>
+              <button class="settings-btn" data-value="dark"><span class="icon">🌙</span>Dark</button>
+              <button class="settings-btn" data-value="auto"><span class="icon">💻</span>Auto</button>
+            </div>
+          </div>
+          
+          <div class="settings-section">
+            <span class="settings-label">Typeface</span>
+            <div class="settings-options" data-setting="font">
+              <button class="settings-btn" data-value="classic">Classic</button>
+              <button class="settings-btn" data-value="modern">Modern</button>
+              <button class="settings-btn" data-value="literary">Literary</button>
+              <button class="settings-btn" data-value="technical">Technical</button>
+            </div>
+          </div>
+          
+          <div class="settings-section">
+            <span class="settings-label">Spacing</span>
+            <div class="settings-options" data-setting="spacing">
+              <button class="settings-btn" data-value="compact">Compact</button>
+              <button class="settings-btn" data-value="normal">Normal</button>
+              <button class="settings-btn" data-value="relaxed">Relaxed</button>
+            </div>
+          </div>
+          
+          <div class="settings-section">
+            <span class="settings-label">Width</span>
+            <div class="settings-options" data-setting="width">
+              <button class="settings-btn" data-value="narrow">Narrow</button>
+              <button class="settings-btn" data-value="normal">Normal</button>
+              <button class="settings-btn" data-value="wide">Wide</button>
+            </div>
+          </div>
+        </div>
+        <button class="settings-toggle" id="settings-toggle" aria-label="Reading settings">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile overlay -->
+    <div class="toc-overlay" id="toc-overlay"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="content-wrapper">
+        <article class="typst-content" id="typst-content">
+          {{CONTENT}}
+        </article>
+      </div>
+    </main>
+
+    <script>
+      // Number headings synchronously before render to prevent flicker
+      (function() {
+        const content = document.getElementById('typst-content');
+        if (!content) return;
+        
+        const headingElements = content.querySelectorAll('h1.numbered-heading, h2.numbered-heading, h3.numbered-heading, h4.numbered-heading');
+        const counters = [0, 0, 0, 0];
+        
+        headingElements.forEach((el) => {
+          // Skip if already has a heading-number span
+          if (el.querySelector('.heading-number')) return;
+          
+          const dataLevel = el.getAttribute('data-level');
+          const level = dataLevel ? parseInt(dataLevel) : parseInt(el.tagName[1]);
+          const text = el.textContent.trim();
+          
+          // Skip if already has a number prefix in text
+          if (text.match(/^([\d.]+)\s*/)) return;
+          
+          // Increment counter at current level
+          const levelIdx = level - 1;
+          counters[levelIdx]++;
+          // Reset deeper level counters
+          for (let i = levelIdx + 1; i < counters.length; i++) {
+            counters[i] = 0;
+          }
+          // Build number string
+          const number = counters.slice(0, level).filter(n => n > 0).join('.');
+          if (number) {
+            el.innerHTML = `<span class="heading-number">${number}.</span> ${el.innerHTML}`;
+          }
+        });
+      })();
+    </script>
+
+    <!-- Mobile TOC toggle -->
+    <button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
+      </svg>
+    </button>
+  </div>
+
+  <script>
+    class TypstReader {
+      constructor() {
+        this.toc = document.getElementById('toc');
+        this.tocList = document.getElementById('toc-list');
+        this.tocTitle = document.getElementById('toc-title');
+        this.tocToggle = document.getElementById('toc-toggle');
+        this.tocOverlay = document.getElementById('toc-overlay');
+        this.settingsToggle = document.getElementById('settings-toggle');
+        this.settingsPanel = document.getElementById('settings-panel');
+        this.content = document.getElementById('typst-content');
+        this.contentWrapper = document.querySelector('.content-wrapper');
+        
+        this.headings = [];
+        
+        // Setting presets
+        this.presets = {
+          font: {
+            classic: { family: "'Cormorant Garamond', Georgia, serif", size: '1.2rem' },
+            modern: { family: "'DM Sans', system-ui, sans-serif", size: '1.05rem' },
+            literary: { family: "'Crimson Text', 'Times New Roman', serif", size: '1.15rem' },
+            technical: { family: "'IBM Plex Mono', 'Consolas', monospace", size: '0.95rem' }
+          },
+          spacing: {
+            compact: '1.5',
+            normal: '1.75',
+            relaxed: '2'
+          },
+          width: {
+            narrow: '650px',
+            normal: '800px',
+            wide: '1000px'
+          }
+        };
+        
+        // Default settings
+        this.settings = {
+          theme: 'auto',
+          font: 'modern',
+          spacing: 'compact',
+          width: 'normal'
+        };
+        
+        this.init();
+      }
+
+      init() {
+        this.loadSettings();
+        this.applySettings();
+        this.extractHeadings();
+        this.buildToc();
+        this.setupScrollspy();
+        this.setupMobileToggle();
+        this.setupSettingsPanel();
+        this.setupFootnotes();
+        this.setupProofToggles();
+        this.setupToggleScrollPreservation();
+        this.fixQedPlacement();
+        this.fixSectionLinks();
+        
+        // Show TOC list after it's built
+        if (this.tocList) {
+          requestAnimationFrame(() => {
+            this.tocList.classList.add('ready');
+          });
+        }
+      }
+
+      loadSettings() {
+        const saved = localStorage.getItem('typst-reader-settings');
+        if (saved) {
+          try {
+            this.settings = { ...this.settings, ...JSON.parse(saved) };
+          } catch (e) {
+            console.warn('Failed to load settings:', e);
+          }
+        }
+      }
+
+      saveSettings() {
+        localStorage.setItem('typst-reader-settings', JSON.stringify(this.settings));
+      }
+
+      applySettings() {
+        // Apply theme
+        if (this.settings.theme === 'auto') {
+          document.documentElement.removeAttribute('data-theme');
+        } else {
+          document.documentElement.setAttribute('data-theme', this.settings.theme);
+        }
+        
+        // Apply font
+        const fontPreset = this.presets.font[this.settings.font];
+        if (fontPreset) {
+          document.documentElement.style.setProperty('--content-font', fontPreset.family);
+          document.documentElement.style.setProperty('--content-font-size', fontPreset.size);
+        }
+        
+        // Apply spacing
+        const spacingValue = this.presets.spacing[this.settings.spacing];
+        if (spacingValue) {
+          document.documentElement.style.setProperty('--content-line-height', spacingValue);
+        }
+        
+        // Apply width
+        const widthValue = this.presets.width[this.settings.width];
+        if (widthValue) {
+          document.documentElement.style.setProperty('--content-max-width', widthValue);
+        }
+        
+        // Update active buttons
+        this.updateActiveButtons();
+      }
+
+      updateActiveButtons() {
+        if (!this.settingsPanel) return;
+        
+        Object.keys(this.settings).forEach(setting => {
+          const container = this.settingsPanel.querySelector(`[data-setting="${setting}"]`);
+          if (container) {
+            container.querySelectorAll('.settings-btn').forEach(btn => {
+              btn.classList.toggle('active', btn.dataset.value === this.settings[setting]);
+            });
+          }
+        });
+      }
+
+      setupSettingsPanel() {
+        if (!this.settingsToggle || !this.settingsPanel) return;
+        
+        // Toggle panel
+        this.settingsToggle.addEventListener('click', () => {
+          this.settingsPanel.classList.toggle('open');
+          this.settingsToggle.classList.toggle('active');
+        });
+        
+        // Handle setting changes
+        this.settingsPanel.querySelectorAll('.settings-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const settingType = btn.closest('[data-setting]').dataset.setting;
+            const value = btn.dataset.value;
+            
+            this.settings[settingType] = value;
+            this.saveSettings();
+            this.applySettings();
+          });
+        });
+        
+        // Initialize active states
+        this.updateActiveButtons();
+      }
+
+      extractHeadings() {
+        // Find all headings (with or without IDs)
+        const headingElements = this.content.querySelectorAll('h1, h2, h3, h4');
+        
+        // Track heading counters for auto-numbering [level1, level2, level3, level4]
+        const counters = [0, 0, 0, 0];
+        
+        headingElements.forEach((el, index) => {
+          // Use data-level attribute if present (from Typst), otherwise fall back to tag level
+          const dataLevel = el.getAttribute('data-level');
+          const level = dataLevel ? parseInt(dataLevel) : parseInt(el.tagName[1]);
+          const text = el.textContent.trim();
+          
+          // Generate ID if not present
+          let id = el.id;
+          if (!id) {
+            id = 'heading-' + text.toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-|-$/g, '') + '-' + index;
+            el.id = id;
+          }
+          
+          // Extract number if present - check for heading-number span first
+          let number = '';
+          let cleanText = text;
+          let cleanHtml = el.innerHTML; // Preserve HTML for colored tags like [TODO], [REVIEW]
+          const headingNumberSpan = el.querySelector('.heading-number');
+          if (headingNumberSpan) {
+            number = headingNumberSpan.textContent.replace(/\.$/, ''); // Remove trailing dot
+            cleanText = el.textContent.replace(headingNumberSpan.textContent, '').trim();
+            // Remove the heading-number span from HTML
+            cleanHtml = el.innerHTML.replace(headingNumberSpan.outerHTML, '').trim();
+          } else {
+            // Fall back to text matching (e.g., "1. Introduction" -> "1.")
+            let numberMatch = text.match(/^([\d.]+)\s*/);
+            number = numberMatch ? numberMatch[1] : '';
+            cleanText = numberMatch ? text.replace(numberMatch[0], '') : text;
+            // Remove number prefix from HTML too
+            if (numberMatch) {
+              cleanHtml = el.innerHTML.replace(/^[\d.]+\.\s*/, '');
+            }
+          }
+          
+          // Auto-generate numbers for numbered-heading class if no number found
+          if (!number && el.classList.contains('numbered-heading') && !headingNumberSpan) {
+            // Increment counter at current level (1-indexed, array is 0-indexed)
+            const levelIdx = level - 1;
+            counters[levelIdx]++;
+            // Reset deeper level counters
+            for (let i = levelIdx + 1; i < counters.length; i++) {
+              counters[i] = 0;
+            }
+            // Build number string (e.g., "1.2.3")
+            number = counters.slice(0, level).filter(n => n > 0).join('.');
+            // Prepend number to heading text in the DOM
+            if (number) {
+              el.innerHTML = `<span class="heading-number">${number}.</span> ${el.innerHTML}`;
+              // cleanHtml stays as original (without the new number)
+            }
+          }
+          
+          this.headings.push({
+            level,
+            text: cleanText,
+            html: cleanHtml, // Store HTML to preserve colored tags
+            number,
+            id,
+            element: el
+          });
+        });
+      }
+
+      buildToc() {
+        if (this.headings.length === 0) {
+          this.tocList.innerHTML = '<li style="padding: 12px 24px; color: var(--text-toc-muted); font-size: 0.875rem;">No headings found</li>';
+          return;
+        }
+
+        // Keep the template-provided title (note name) instead of overriding with first heading
+
+        this.tocList.innerHTML = this.headings
+          .filter(h => h.level <= 3) // Only show h1, h2, h3
+          .map(h => `
+            <li class="toc-item">
+              <a href="#${h.id}" class="toc-link" data-level="${h.level}" data-id="${h.id}">
+                ${h.number ? `<span class="toc-number">${h.number}</span>` : ''}
+                <span class="toc-text">${h.html || h.text}</span>
+              </a>
+            </li>
+          `).join('');
+
+        // Click handlers
+        this.tocList.querySelectorAll('.toc-link').forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = link.dataset.id;
+            const target = document.getElementById(id);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              // Close mobile TOC
+              this.closeMobileToc();
+            }
+          });
+        });
+      }
+
+      setupScrollspy() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                this.setActiveLink(entry.target.id);
+              }
+            });
+          },
+          {
+            rootMargin: '-10% 0px -80% 0px',
+            threshold: 0
+          }
+        );
+
+        this.headings.forEach(h => {
+          if (h.element) observer.observe(h.element);
+        });
+      }
+
+      setActiveLink(id) {
+        this.tocList.querySelectorAll('.toc-link').forEach(link => {
+          link.classList.toggle('active', link.dataset.id === id);
+        });
+      }
+
+      setupMobileToggle() {
+        this.tocToggle.addEventListener('click', () => {
+          this.toc.classList.toggle('open');
+          this.tocOverlay.classList.toggle('open');
+        });
+
+        this.tocOverlay.addEventListener('click', () => {
+          this.closeMobileToc();
+        });
+      }
+
+      closeMobileToc() {
+        this.toc.classList.remove('open');
+        this.tocOverlay.classList.remove('open');
+      }
+
+      setupFootnotes() {
+        // Find all footnote markers in the main content.
+        // Note: Typst's HTML export also emits a `section[role="doc-endnotes"]` with the canonical footnote bodies.
+        // We prefer that source because it correctly preserves block-level content (including block equations).
+        const markers = Array.from(this.content.querySelectorAll('.footnote-marker'))
+          .filter(m => !m.closest('section[role="doc-endnotes"], [role="doc-endnotes"], aside.footnotes'));
+        
+        if (markers.length === 0) return;
+
+        // Map marker location id (e.g. "loc-1") -> endnote <li>
+        const endnoteByLocId = new Map();
+        const endnotesContainer = this.content.querySelector('section[role="doc-endnotes"], [role="doc-endnotes"], aside.footnotes');
+        if (endnotesContainer) {
+          endnotesContainer.querySelectorAll('li').forEach(li => {
+            const backlink = li.querySelector('a[role="doc-backlink"]');
+            const href = backlink?.getAttribute('href') || '';
+            if (href.startsWith('#') && href.length > 1) {
+              endnoteByLocId.set(href.slice(1), li);
+            }
+          });
+        }
+
+        const extractFootnoteHtml = (marker, fnNum) => {
+          // Preferred: Typst canonical endnotes section (handles block equations safely).
+          if (marker?.id && endnoteByLocId.has(marker.id)) {
+            const li = endnoteByLocId.get(marker.id);
+            const clone = li.cloneNode(true);
+            // Remove "backlink" (the little superscript link back to the marker).
+            clone.querySelectorAll('a[role="doc-backlink"]').forEach(a => a.remove());
+            return clone.innerHTML;
+          }
+
+          // Fallback: preamble-generated hidden footnote content (older exports).
+          const contentEl = this.content.querySelector('#fn-' + fnNum);
+          return contentEl ? contentEl.innerHTML : null;
+        };
+        
+        // Create tooltip for each marker
+        markers.forEach((marker) => {
+          const ref = marker.querySelector('.footnote-ref');
+          if (!ref) return;
+          
+          // Get footnote number from the text content
+          const fnNum = ref.textContent.trim();
+          const html = extractFootnoteHtml(marker, fnNum);
+          
+          if (!html) return;
+
+          // Create tooltip
+          const tooltip = document.createElement('div');
+          tooltip.className = 'footnote-tooltip';
+          tooltip.innerHTML = html;
+          marker.appendChild(tooltip);
+          
+          // Also add click handler to scroll to footnotes section
+          marker.style.cursor = 'pointer';
+          marker.addEventListener('click', () => {
+            const footnotesToggle = this.content.querySelector('details.footnotes-section');
+            if (footnotesToggle) footnotesToggle.setAttribute('open', '');
+            const footnoteItem = document.getElementById('footnote-' + fnNum);
+            if (footnoteItem) {
+              footnoteItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              footnoteItem.style.background = 'var(--accent-soft)';
+              setTimeout(() => { footnoteItem.style.background = ''; }, 2000);
+            }
+          });
+        });
+        
+        // Create footnotes section at bottom (in marker order)
+        const section = document.createElement('details');
+        section.className = 'footnotes-section';
+        // Hidden by default (no `open` attribute)
+        section.innerHTML = '<summary>Footnotes</summary><ol></ol>';
+        const ol = section.querySelector('ol');
+
+        let appendedAny = false;
+        markers.forEach(marker => {
+          const ref = marker.querySelector('.footnote-ref');
+          if (!ref) return;
+          const fnNum = ref.textContent.trim();
+          const html = extractFootnoteHtml(marker, fnNum);
+          if (!html) return;
+
+          const li = document.createElement('li');
+          li.id = 'footnote-' + fnNum;
+          li.innerHTML = html;
+          ol.appendChild(li);
+          appendedAny = true;
+        });
+
+        if (appendedAny) {
+          this.content.appendChild(section);
+        }
+      }
+
+      setupToggleScrollPreservation() {
+        // Prevent scroll jumps when opening <details> for the first time (content layout/images load).
+        if (this._toggleScrollPreservationInstalled) return;
+        this._toggleScrollPreservationInstalled = true;
+
+        const matchesToggleDetails = (details) => {
+          if (!details) return false;
+          return details.matches('details.proof-box, details.toggle-box, details.footnotes-section');
+        };
+
+        const adjustToKeepAnchorFixed = (anchorEl, beforeTop, beforeScrollY) => {
+          if (!anchorEl) return;
+          const afterTop = anchorEl.getBoundingClientRect().top;
+          const delta = afterTop - beforeTop;
+          if (Math.abs(delta) > 0.5) {
+            window.scrollTo(0, beforeScrollY + delta);
+          }
+        };
+
+        // Use event delegation so it survives incremental content swaps.
+        this.content.addEventListener('click', (e) => {
+          const summary = e.target?.closest?.('summary');
+          if (!summary) return;
+          const details = summary.parentElement;
+          if (!matchesToggleDetails(details)) return;
+
+          // Record anchor position BEFORE the toggle happens.
+          const beforeTop = summary.getBoundingClientRect().top;
+          const beforeScrollY = window.scrollY;
+
+          // After DOM updates + layout settle, adjust scroll to keep summary fixed.
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              adjustToKeepAnchorFixed(summary, beforeTop, beforeScrollY);
+
+              // If we're opening, images inside may load later and shift layout again.
+              // Keep the summary anchored as those images load.
+              if (details?.open) {
+                const imgs = Array.from(details.querySelectorAll('img'));
+                imgs.forEach((img) => {
+                  if (img.complete) return;
+                  if (img.dataset.scrollAnchorBound === '1') return;
+                  img.dataset.scrollAnchorBound = '1';
+                  const onDone = () => adjustToKeepAnchorFixed(summary, beforeTop, beforeScrollY);
+                  img.addEventListener('load', onDone, { once: true });
+                  img.addEventListener('error', onDone, { once: true });
+                });
+              }
+            });
+          });
+        }, true);
+      }
+
+      // ---------------------------------------------------------------------
+      // Toggle persistence (proof + toggle)
+      // ---------------------------------------------------------------------
+      getProofStorageKey() {
+        // Key by note path so different notes don't share toggle state.
+        // Example: "/inference/" -> "/inference"
+        const noteKey = (location.pathname || '/').replace(/\/$/, '') || '/';
+        return 'typst-proof-toggle-state:' + noteKey;
+      }
+
+      loadProofToggleState() {
+        try {
+          const raw = localStorage.getItem(this.getProofStorageKey());
+          if (!raw) return {};
+          const parsed = JSON.parse(raw);
+          return parsed && typeof parsed === 'object' ? parsed : {};
+        } catch (_) {
+          return {};
+        }
+      }
+
+      saveProofToggleState(state) {
+        try {
+          localStorage.setItem(this.getProofStorageKey(), JSON.stringify(state || {}));
+        } catch (_) {
+          // Ignore (storage may be unavailable)
+        }
+      }
+
+      saveProofToggleStateFromDom() {
+        const state = {};
+        const proofBoxes = Array.from(this.content.querySelectorAll('details.proof-box:not(.toggle-box)'));
+        const toggleBoxes = Array.from(this.content.querySelectorAll('details.toggle-box'));
+
+        proofBoxes.forEach((box, idx) => { state['proof:' + String(idx)] = !!box.open; });
+        toggleBoxes.forEach((box, idx) => { state['toggle:' + String(idx)] = !!box.open; });
+
+        if (proofBoxes.length === 0 && toggleBoxes.length === 0) return;
+        this.saveProofToggleState(state);
+      }
+
+      setupProofToggles() {
+        const state = this.loadProofToggleState();
+        const proofBoxes = Array.from(this.content.querySelectorAll('details.proof-box:not(.toggle-box)'));
+        const toggleBoxes = Array.from(this.content.querySelectorAll('details.toggle-box'));
+        if (proofBoxes.length === 0 && toggleBoxes.length === 0) return;
+
+        const apply = (boxes, kind) => {
+          boxes.forEach((box, idx) => {
+            const key = kind + ':' + String(idx);
+            box.dataset.proofIndex = key;
+            if (Object.prototype.hasOwnProperty.call(state, key)) {
+              if (state[key]) box.setAttribute('open', '');
+              else box.removeAttribute('open');
+            }
+          });
+
+          boxes.forEach((box) => {
+            box.addEventListener('toggle', () => {
+              const key = box.dataset.proofIndex;
+              if (key == null) return;
+              const next = this.loadProofToggleState();
+              next[String(key)] = !!box.open;
+              this.saveProofToggleState(next);
+            });
+          });
+        };
+
+        apply(proofBoxes, 'proof');
+        apply(toggleBoxes, 'toggle');
+      }
+
+      fixQedPlacement() {
+        // IMPORTANT: We must match ONLY the actual QED box glyph.
+        // Earlier heuristics (holes/compound paths/etc) will incorrectly match letters like A/B/P/ℝ/ℙ.
+
+        // Cleanup JS-added classes. Don't touch span.qed - Typst preamble sets it correctly.
+        this.content.querySelectorAll('p.qed-paragraph').forEach(p => p.classList.remove('qed-paragraph'));
+        this.content.querySelectorAll('p.has-qed').forEach(p => p.classList.remove('has-qed'));
+        this.content.querySelectorAll('.qed-text').forEach(el => {
+          // Unwrap: move children out, then remove wrapper.
+          const p = el.parentElement;
+          if (!p) return;
+          while (el.firstChild) p.insertBefore(el.firstChild, el);
+          el.remove();
+        });
+
+        // Handle text-based QED spans from Typst preamble (class="qed" with □ character)
+        // If standalone in paragraph, add qed-paragraph class for right alignment
+        this.content.querySelectorAll('span.qed').forEach(span => {
+          if (span.querySelector('svg')) return; // Skip SVG-based, handled below
+          const p = span.closest('p');
+          if (!p) return;
+          const meaningful = Array.from(p.childNodes).filter(n => 
+            n.nodeType !== Node.TEXT_NODE || n.textContent.trim().length > 0
+          );
+          if (meaningful.length === 1 && meaningful[0] === span) {
+            p.classList.add('qed-paragraph');
+          } else {
+            p.classList.add('has-qed');
+          }
+        });
+
+        // Legacy: SVG-based QED detection
+        // Typst HTML represents the QED box as a single-glyph SVG <use>.
+        // Glyph ids vary per build, so rely on shape signature first.
+        const QED_GLYPH_IDS = new Set(['g90369086EC55A1C591EB7CE746D548D4']); // legacy fallback
+
+        const isQedPathSignature = (d) => {
+          if (!d) return false;
+          // General signature of Typst's hollow square:
+          // - contains vertical segments around 7 units (inner square)
+          // - contains horizontal segments around 7 units
+          // - closes the path (Z)
+          return (
+            /v\s*-?7\.[0-9]+/i.test(d) &&
+            /h\s*-?7\.[0-9]+/i.test(d) &&
+            /v\s*7\.[0-9]+/i.test(d) &&
+            /Z/i.test(d)
+          );
+        };
+
+        const paragraphs = this.content.querySelectorAll('p');
+
+        paragraphs.forEach(p => {
+          const spans = p.querySelectorAll('span[style*="inline-block"]');
+          if (spans.length === 0) return;
+
+          spans.forEach(span => {
+            const svg = span.querySelector('svg.typst-frame');
+            if (!svg) return;
+
+            const useElements = svg.querySelectorAll('use');
+            if (useElements.length !== 1) return;
+
+            const useEl = useElements[0];
+            const href = useEl.getAttribute('xlink:href') || useEl.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+
+            const glyphId = href.slice(1);
+            let isQed = QED_GLYPH_IDS.has(glyphId);
+
+            if (!isQed) {
+              // Symbol definitions live in a shared <defs> at document level.
+              const symbol = document.getElementById(glyphId) || svg.querySelector(`symbol#${glyphId}`);
+              const pathEl = symbol?.querySelector('path');
+              const d = pathEl?.getAttribute('d') || '';
+              isQed = isQedPathSignature(d);
+            }
+
+            if (!isQed) return;
+
+            // If this paragraph contains ONLY this QED (standalone QED paragraph), right-align the paragraph.
+            const meaningfulContent = Array.from(p.childNodes).filter(node => {
+              if (node.nodeType === Node.TEXT_NODE) return node.textContent.trim().length > 0;
+              return true;
+            });
+
+            if (meaningfulContent.length === 1 && meaningfulContent[0] === span) {
+              p.classList.add('qed-paragraph');
+              span.classList.add('qed');
+            } else {
+              span.classList.add('qed');
+              p.classList.add('has-qed');
+            }
+          });
+        });
+
+        // If the QED is emitted as its own paragraph, try to merge it into the
+        // previous paragraph so it appears on the same final line.
+        // (This commonly happens because `h(1fr)` is ignored in HTML export.)
+        Array.from(this.content.querySelectorAll('p.qed-paragraph')).forEach(p => {
+          const qedSpan = p.querySelector('span.qed');
+          if (!qedSpan) return;
+
+          const prev = p.previousElementSibling;
+          if (!prev || prev.tagName !== 'P') return;
+          if (prev.querySelector('span.qed')) return; // already has one
+
+          prev.appendChild(document.createTextNode(' '));
+          prev.appendChild(qedSpan);
+          prev.classList.add('has-qed');
+          p.remove();
+        });
+
+        // Wrap paragraph content so flex layout only has two children:
+        // `.qed-text` (all text/content) and `span.qed` (the box).
+        // Avoid `:scope` selectors for broader browser compatibility.
+        Array.from(this.content.querySelectorAll('p.has-qed')).forEach(p => {
+          const hasWrapper = Array.from(p.children).some(ch => ch.classList?.contains('qed-text'));
+          if (hasWrapper) return;
+
+          let qedEl = Array.from(p.children).find(
+            ch => ch.tagName === 'SPAN' && ch.classList.contains('qed'),
+          );
+          if (!qedEl) {
+            // Try to hoist nested QED to be a direct child.
+            const nested = p.querySelector('span.qed');
+            if (!nested) return;
+            qedEl = nested;
+            p.appendChild(qedEl);
+          }
+
+          const wrap = document.createElement('span');
+          wrap.className = 'qed-text';
+
+          // Move everything except the QED into the wrapper.
+          while (p.firstChild && p.firstChild !== qedEl) {
+            wrap.appendChild(p.firstChild);
+          }
+          p.insertBefore(wrap, qedEl);
+        });
+      }
+
+      fixSectionLinks() {
+        // Fix internal reference links (sections, equations, figures)
+        // Adds smooth scrolling and highlight effects
+        
+        const links = this.content.querySelectorAll('a[href^="#"]');
+        
+        links.forEach(link => {
+          const href = link.getAttribute('href');
+          const targetId = href.slice(1); // Remove # prefix
+          const linkText = link.textContent.trim();
+          
+          // Check what type of reference this is
+          const sectionMatch = linkText.match(/^Section\s+([\d.]+)$/);
+          const equationMatch = linkText.match(/^Equation\s+(\d+)$/);
+          const figureMatch = linkText.match(/^Figure\s+(\d+)$/);
+          
+          if (sectionMatch) {
+            const sectionNum = sectionMatch[1];
+            
+            // Find the heading with this section number
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              
+              // Look for heading that starts with this number
+              const headings = this.content.querySelectorAll('h1, h2, h3, h4');
+              for (const heading of headings) {
+                const text = heading.textContent.trim();
+                // Match "1.2. Title" or "1.2 Title" patterns
+                if (text.startsWith(sectionNum + '.') || text.startsWith(sectionNum + ' ')) {
+                  heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  heading.style.background = 'var(--accent-soft)';
+                  setTimeout(() => { heading.style.background = ''; }, 2000);
+                  return;
+                }
+              }
+              
+              // Fallback: try to find by the original href
+              const target = document.getElementById(targetId);
+              if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            });
+          } else if (equationMatch || figureMatch) {
+            // Equation and figure links - smooth scroll to target with highlight
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              const target = document.getElementById(targetId);
+              if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                target.style.background = 'var(--accent-soft)';
+                setTimeout(() => { target.style.background = ''; }, 2000);
+              }
+            });
+          }
+        });
+      }
+    }
+
+    // Initialize when DOM is ready
+    function initializeReader() {
+      window.typstReader = new TypstReader();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeReader);
+    } else {
+      // DOM is already loaded
+      initializeReader();
+    }
+
+    // Fallback: show TOC list after 500ms even if initialization fails
+    setTimeout(() => {
+      const tocList = document.getElementById('toc-list');
+      if (tocList && !tocList.classList.contains('ready')) {
+        tocList.classList.add('ready');
+      }
+    }, 500);
+
+    // Manual refresh support (Ctrl+R = incremental, Cmd+R = full reload)
+    (function() {
+      let isUpdating = false;
+      
+      // Incremental update function - called manually via Ctrl+R
+      async function incrementalUpdate() {
+        if (isUpdating) return;
+        isUpdating = true;
+        
+        try {
+          // Get current scroll position
+          const scrollY = window.scrollY;
+          const scrollPercent = scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+          
+          // Fetch new content
+          const notePath = location.pathname.replace(/\/$/, '');
+          const response = await fetch(notePath + '/__content?t=' + Date.now());
+          if (!response.ok) throw new Error('Failed to fetch content');
+          const newContent = await response.text();
+          
+          // Replace content
+          const contentEl = document.getElementById('typst-content');
+          if (contentEl) {
+            // Persist proof toggle state before swapping DOM (so Ctrl+R keeps it)
+            if (window.typstReader) {
+              window.typstReader.saveProofToggleStateFromDom();
+            }
+
+            contentEl.innerHTML = newContent;
+            
+            // Re-run heading numbering
+            const headingElements = contentEl.querySelectorAll('h1.numbered-heading, h2.numbered-heading, h3.numbered-heading, h4.numbered-heading');
+            const counters = [0, 0, 0, 0];
+            headingElements.forEach((el) => {
+              if (el.querySelector('.heading-number')) return;
+              const dataLevel = el.getAttribute('data-level');
+              const level = dataLevel ? parseInt(dataLevel) : parseInt(el.tagName[1]);
+              const text = el.textContent.trim();
+              if (text.match(/^([\d.]+)\s*/)) return;
+              const levelIdx = level - 1;
+              counters[levelIdx]++;
+              for (let i = levelIdx + 1; i < counters.length; i++) counters[i] = 0;
+              const number = counters.slice(0, level).filter(n => n > 0).join('.');
+              if (number) el.innerHTML = '<span class="heading-number">' + number + '.</span> ' + el.innerHTML;
+            });
+            
+            // Reinitialize reader (TOC, scrollspy, footnotes, QED placement, etc.)
+            if (window.typstReader) {
+              window.typstReader.headings = [];
+              window.typstReader.extractHeadings();
+              window.typstReader.buildToc();
+              window.typstReader.setupScrollspy();
+              window.typstReader.setupFootnotes();
+              window.typstReader.setupProofToggles();
+              window.typstReader.setupToggleScrollPreservation();
+              window.typstReader.fixQedPlacement();
+              window.typstReader.fixSectionLinks();
+            }
+            
+            // Restore scroll position (use percentage to handle content size changes)
+            const newScrollY = scrollPercent * (document.documentElement.scrollHeight - window.innerHeight);
+            window.scrollTo(0, newScrollY);
+            
+            // Brief highlight effect
+            contentEl.style.transition = 'opacity 0.15s ease';
+            contentEl.style.opacity = '0.7';
+            setTimeout(() => { contentEl.style.opacity = '1'; }, 150);
+          }
+        } catch (err) {
+          console.warn('Incremental update failed:', err);
+          throw err;
+        } finally {
+          isUpdating = false;
+        }
+      }
+      
+      // Expose for manual use
+      window.incrementalUpdate = incrementalUpdate;
+      
+      // Keyboard shortcut: Ctrl+R for incremental update (Cmd+R still does full reload)
+      document.addEventListener('keydown', async (e) => {
+        // Ctrl+R (not Cmd+R on Mac, which is metaKey)
+        if (e.ctrlKey && !e.metaKey && e.key === 'r') {
+          e.preventDefault();
+          try {
+            await incrementalUpdate();
+          } catch (err) {
+            // Silent fail - user can use Cmd+R for full reload
+          }
+        }
+      });
+    })();
+
+  </script>
+</body>
+</html>
